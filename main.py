@@ -1,7 +1,5 @@
 import numpy
 import pandas
-from sklearn import tree
-
 filename = "NFL 2018.xlsx"
 
 file = pandas.read_excel(filename)
@@ -14,12 +12,13 @@ testing = []
 # Split the data into reference and testing data
 for x in range(0, len(file[label])):
     temp = [file[label[1]][x], file[label[2]][x], file[label[3]][x], file[label[4]][x], file[label[5]][x],
-            file[label[6]][x], file[label[7]][x],
+            file[label[6]][x],
+            # file[label[7]][x],  #removed because of inaccuracy
             file[label[8]][x], file[label[9]][x]]
-    if not numpy.isnan(file[label[11]][x]):
+    if not numpy.isnan(file[label[12]][x]):
         features.append(temp)
-        featuresResults.append([file[label[11]][x], file[label[12]][x]])
-    else:
+        featuresResults.append([file[label[12]][x], file[label[13]][x]])
+    elif not type(temp[0]) == float and not type(temp[6]) == float and not type(temp[7]) == float :
         testing.append(temp)
 
 
@@ -59,10 +58,5 @@ machinelearning=machinelearning.predict(testing)
 
 
 for x in range(0,len(testingOutput)):
-    total=machinelearning[x][1]+machinelearning[x][0]
-    home=int (machinelearning[x][0]/total*100)
-    away=int (machinelearning[x][1]/total*100)
-
-
     print(testingOutput[x][0] +" VS " + testingOutput[x][1] +" " + str(int(machinelearning[x][0])) +" to "
-          + str(int(machinelearning[x][1]))+" "+ str(home) +" vs "+ str(away))
+    + str(int(machinelearning[x][1])))
